@@ -7,20 +7,26 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            color: #333;
+            background-color: #000000; /* Pure black for AMOLED screens */
+            color: #ffffff; /* White text for contrast */
             text-align: center;
             padding: 50px;
         }
         #random-verse, #votd {
             margin: 20px 0;
             padding: 20px;
-            background-color: #fff;
+            background-color: #1c1c1c; /* Dark grey background for containers */
             border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1); /* Soft white shadow */
         }
         h1 {
-            color: #555;
+            color: #ffffff; /* White text */
+        }
+        .orange {
+            color: #ffa500; /* Orange color */
+        }
+        .green {
+            color: #00ff00; /* Bright green color */
         }
     </style>
 </head>
@@ -36,13 +42,44 @@
     </div>
 
     <script>
+        const orangeBooks = [
+            "Genesis", "Exodus", "Leviticus", "Numbers", "Deuteronomy", "Joshua", "Judges", "Ruth",
+            "1 Samuel", "2 Samuel", "1 Kings", "2 Kings", "1 Chronicles", "2 Chronicles", "Ezra",
+            "Nehemiah", "Esther", "Job", "Psalms", "Proverbs", "Ecclesiastes", "Song of Solomon",
+            "Isaiah", "Jeremiah", "Lamentations", "Ezekiel", "Daniel", "Hosea", "Joel", "Amos",
+            "Obadiah", "Jonah", "Micah", "Nahum", "Habakkuk", "Zephaniah", "Haggai", "Zechariah", "Malachi"
+        ];
+
+        const greenBooks = [
+            "Matthew", "Mark", "Luke", "John", "Acts", "Romans", "1 Corinthians", "2 Corinthians",
+            "Galatians", "Ephesians", "Philippians", "Colossians", "1 Thessalonians", "2 Thessalonians",
+            "1 Timothy", "2 Timothy", "Titus", "Philemon", "Hebrews", "James", "1 Peter", "2 Peter",
+            "1 John", "2 John", "3 John", "Jude", "Revelation"
+        ];
+
+        function getVerseColor(bookname) {
+            if (orangeBooks.includes(bookname)) {
+                return 'orange';
+            } else if (greenBooks.includes(bookname)) {
+                return 'green';
+            } else {
+                return '#ffffff'; // default white text color
+            }
+        }
+
+        function displayVerse(elementId, verseData) {
+            let bookname = verseData.bookname;
+            let color = getVerseColor(bookname);
+            let verseText = `${bookname} ${verseData.chapter}:${verseData.verse} - ${verseData.text}`;
+            document.querySelector(`#${elementId} p`).innerHTML = `<span class="${color}">${verseText}</span>`;
+        }
+
         // Fetch Random Bible Verse
         fetch('https://labs.bible.org/api/?passage=random&type=json&callback=myCallback')
             .then(response => response.text())
             .then(data => {
                 let jsonData = JSON.parse(data.substring(data.indexOf('(') + 1, data.lastIndexOf(')')));
-                let verse = jsonData[0].text + " - " + jsonData[0].bookname + " " + jsonData[0].chapter + ":" + jsonData[0].verse;
-                document.querySelector('#random-verse p').innerText = verse;
+                displayVerse('random-verse', jsonData[0]);
             })
             .catch(error => console.error('Error fetching random verse:', error));
 
@@ -51,8 +88,7 @@
             .then(response => response.text())
             .then(data => {
                 let jsonData = JSON.parse(data.substring(data.indexOf('(') + 1, data.lastIndexOf(')')));
-                let verse = jsonData[0].text + " - " + jsonData[0].bookname + " " + jsonData[0].chapter + ":" + jsonData[0].verse;
-                document.querySelector('#votd p').innerText = verse;
+                displayVerse('votd', jsonData[0]);
             })
             .catch(error => console.error('Error fetching verse of the day:', error));
     </script>
