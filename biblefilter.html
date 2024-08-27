@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Filter Audio Paths</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Filter Audio Paths</h1>
+        <textarea id="inputText" rows="10" cols="100" placeholder="Paste your data here..."></textarea><br><br>
+        <button onclick="filterAudioPaths()">Filter Paths</button>
+        <div id="output" style="margin-top: 20px; white-space: pre-line;"></div>
+    </div>
+
+    <script>
+        function filterAudioPaths() {
+            const inputText = document.getElementById('inputText').value;
+            const regex = /audio\/(OT|NT)\/[^\"]+/g; // Regular expression to find paths with audio/OT/ or audio/NT/
+            const matches = inputText.match(regex);
+
+            const outputDiv = document.getElementById('output');
+            if (matches) {
+                outputDiv.textContent = matches.join('\n'); // Display each match on a new line
+            } else {
+                outputDiv.textContent = 'No audio paths found.';
+            }
+        }
+    </script>
+</body>
+</html>
