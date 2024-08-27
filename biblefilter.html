@@ -10,21 +10,29 @@
         <h1>Filter Audio Paths</h1>
         <textarea id="inputText" rows="10" cols="100" placeholder="Paste your data here..."></textarea><br><br>
         <button onclick="filterAudioPaths()">Filter Paths</button>
+        <button onclick="copyToClipboard()">Copy to Clipboard</button>
         <div id="output" style="margin-top: 20px; white-space: pre-line;"></div>
     </div>
 
     <script>
         function filterAudioPaths() {
             const inputText = document.getElementById('inputText').value;
-            const regex = /audio\/(OT|NT)\/[^\"]+/g; // Regular expression to find paths with audio/OT/ or audio/NT/
-            const matches = inputText.match(regex);
+            const regex = /audio\/(OT|NT)\/[^\"]+\.mp3/g; // Regular expression to find paths with audio/OT/ or audio/NT/ and .mp3
+            const matches = [...new Set(inputText.match(regex))]; // Remove duplicates using Set
 
             const outputDiv = document.getElementById('output');
-            if (matches) {
+            if (matches.length > 0) {
                 outputDiv.textContent = matches.join('\n'); // Display each match on a new line
             } else {
-                outputDiv.textContent = 'No audio paths found.';
+                outputDiv.textContent = 'No valid audio paths found.';
             }
+        }
+
+        function copyToClipboard() {
+            const outputDiv = document.getElementById('output');
+            navigator.clipboard.writeText(outputDiv.textContent)
+                .then(() => alert('Copied to clipboard!'))
+                .catch(err => console.error('Failed to copy text: ', err));
         }
     </script>
 </body>
