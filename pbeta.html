@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Awesome Random Verse</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&family=Montserrat:wght@400;500;700&display=swap');
+        
+        :root {
+            --orange: #ffa500;
+            --green: #4ade80;
+            --dark-bg: #121212;
+            --card-bg: #1e1e1e;
+            --text-primary: #f8f9fa;
+            --text-secondary: #e2e2e2;
+            --shadow-color: rgba(0, 0, 0, 0.5);
+            --glow-orange: rgba(255, 165, 0, 0.15);
+            --glow-green: rgba(74, 222, 128, 0.15);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #000000;
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding: 0;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(255, 165, 0, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(74, 222, 128, 0.05) 0%, transparent 20%);
+            overflow-x: hidden;
+        }
+        
+        header {
+            width: 100%;
+            padding: 2rem 1rem;
+            text-align: center;
+            position: relative;
+        }
+        
+        h1 {
+            font-family: 'Merriweather', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(90deg, var(--orange), var(--green));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            position: relative;
+            display: inline-block;
+        }
+        
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--orange), var(--green));
+            border-radius: 3px;
+        }
+        
+        .subtitle {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            font-weight: 300;
+            max-width: 600px;
+            margin: 1rem auto;
+        }
+        
+        main {
+            width: 100%;
+            max-width: 900px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0 1rem;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .verse-card {
+            width: 100%;
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px var(--shadow-color);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .verse-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px var(--shadow-color);
+        }
+        
+        .verse-card.orange-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: var(--orange);
+            border-radius: 4px 0 0 4px;
+        }
+        
+        .verse-card.green-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: var(--green);
+            border-radius: 4px 0 0 4px;
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+        
+        .card-title {
+            font-family: 'Merriweather', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .card-icon {
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+        
+        .orange-icon {
+            color: var(--orange);
+            background-color: rgba(255, 165, 0, 0.1);
+        }
+        
+        .green-icon {
+            color: var(--green);
+            background-color: rgba(74, 222, 128, 0.1);
+        }
+        
+        .verse-content {
+            position: relative;
+            font-family: 'Merriweather', serif;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            padding: 1rem 0;
+            border-radius: 8px;
+        }
+        
+        .verse-reference {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 500;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+            opacity: 0.85;
+            text-align: right;
+        }
+        
+        .verse {
+            margin-bottom: 0.5rem;
+        }
+        
+        .orange {
+            color: var(--orange);
+        }
+        
+        .green {
+            color: var(--green);
+        }
+        
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 150px;
+        }
+        
+        .loading::after {
+            content: '';
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--text-primary);
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.8s ease forwards;
+        }
+        
+        .quote-icon {
+            position: absolute;
+            opacity: 0.1;
+            font-size: 3rem;
+        }
+        
+        .quote-left {
+            top: -10px;
+            left: -10px;
+        }
+        
+        .quote-right {
+            bottom: -10px;
+            right: -10px;
+        }
+        
+        footer {
+            width: 100%;
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: auto;
+        }
+        
+        @media (min-width: 768px) {
+            main {
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .verse-card {
+                width: calc(50% - 1rem);
+            }
+            
+            h1 {
+                font-size: 3rem;
+            }
+        }
+        
+        @media (max-width: 767px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .verse-card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1 class="animate__animated animate__fadeIn">Awesome Random Verse</h1>
+        <p class="subtitle animate__animated animate__fadeIn animate__delay-1s">Discover wisdom and inspiration through beautifully presented Bible verses</p>
+    </header>
+    
+    <main>
+        <div class="verse-card orange-card animate__animated animate__fadeInLeft" id="random-verse">
+            <div class="card-header">
+                <h2 class="card-title">
+                    <span class="card-icon orange-icon"><i class="fas fa-random"></i></span>
+                    Random Verse
+                </h2>
+            </div>
+            <div class="verse-content">
+                <i class="fas fa-quote-left quote-icon quote-left orange"></i>
+                <p class="loading"></p>
+                <i class="fas fa-quote-right quote-icon quote-right orange"></i>
+            </div>
+        </div>
+        
+        <div class="verse-card green-card animate__animated animate__fadeInRight" id="votd">
+            <div class="card-header">
+                <h2 class="card-title">
+                    <span class="card-icon green-icon"><i class="fas fa-calendar-day"></i></span>
+                    Verse of the Day
+                </h2>
+            </div>
+            <div class="verse-content">
+                <i class="fas fa-quote-left quote-icon quote-left green"></i>
+                <p class="loading"></p>
+                <i class="fas fa-quote-right quote-icon quote-right green"></i>
+            </div>
+        </div>
+    </main>
+    
+    <footer>
+        <p>&copy; 2025 Awesome Random Verse | Powered by Bible.org API</p>
+    </footer>
+
+    <script>
+        const orangeBooks = [
+            "Genesis", "Exodus", "Leviticus", "Numbers", "Deuteronomy", "Joshua", "Judges", "Ruth", 
+            "1 Samuel", "2 Samuel", "1 Kings", "2 Kings", "1 Chronicles", "2 Chronicles", "Ezra", 
+            "Nehemiah", "Esther", "Job", "Psalms", "Proverbs", "Ecclesiastes", "Song of Solomon", 
+            "Isaiah", "Jeremiah", "Lamentations", "Ezekiel", "Daniel", "Hosea", "Joel", "Amos", 
+            "Obadiah", "Jonah", "Micah", "Nahum", "Habakkuk", "Zephaniah", "Haggai", "Zechariah", "Malachi"
+        ];
+        
+        const greenBooks = [
+            "Matthew", "Mark", "Luke", "John", "Acts", "Romans", "1 Corinthians", "2 Corinthians", 
+            "Galatians", "Ephesians", "Philippians", "Colossians", "1 Thessalonians", "2 Thessalonians", 
+            "1 Timothy", "2 Timothy", "Titus", "Philemon", "Hebrews", "James", "1 Peter", "2 Peter", 
+            "1 John", "2 John", "3 John", "Jude", "Revelation"
+        ];
+
+        function getVerseColor(bookname) {
+            if (orangeBooks.includes(bookname)) {
+                return 'orange';
+            } else if (greenBooks.includes(bookname)) {
+                return 'green';
+            } else {
+                return 'white'; // default white text color
+            }
+        }
+
+        function displayVerse(elementId, verseData) {
+            let bookname = verseData.bookname;
+            let color = getVerseColor(bookname);
+            let verseElement = document.querySelector(`#${elementId} .verse-content p`);
+            
+            // Clear loading state
+            verseElement.classList.remove('loading');
+            
+            // Create verse text and reference elements
+            let verseHTML = `
+                <span class="verse ${color}">${verseData.text}</span>
+                <div class="verse-reference ${color}">
+                    ${bookname} ${verseData.chapter}:${verseData.verse}
+                </div>
+            `;
+            
+            // Add the content with fade-in animation
+            verseElement.innerHTML = verseHTML;
+            verseElement.classList.add('fade-in');
+            
+            // Update card styling based on verse type
+            let cardElement = document.getElementById(elementId);
+            if (color === 'orange') {
+                cardElement.classList.add('orange-card');
+                cardElement.classList.remove('green-card');
+            } else if (color === 'green') {
+                cardElement.classList.add('green-card');
+                cardElement.classList.remove('orange-card');
+            }
+        }
+
+        // Fetch Random Bible Verse
+        fetch('https://cors.kawiesh.top/https://labs.bible.org/api/?passage=random&type=json&callback=myCallback')
+            .then(response => response.text())
+            .then(data => {
+                let jsonData = JSON.parse(data.substring(data.indexOf('(') + 1, data.lastIndexOf(')')));
+                displayVerse('random-verse', jsonData[0]);
+            })
+            .catch(error => {
+                console.error('Error fetching random verse:', error);
+                document.querySelector('#random-verse .verse-content p').innerHTML = 
+                    'Unable to load verse. Please try again later.';
+            });
+
+        // Fetch Verse of the Day
+        fetch('https://cors.kawiesh.top/https://labs.bible.org/api/?passage=votd&type=json&callback=myCallback')
+            .then(response => response.text())
+            .then(data => {
+                let jsonData = JSON.parse(data.substring(data.indexOf('(') + 1, data.lastIndexOf(')')));
+                displayVerse('votd', jsonData[0]);
+            })
+            .catch(error => {
+                console.error('Error fetching verse of the day:', error);
+                document.querySelector('#votd .verse-content p').innerHTML = 
+                    'Unable to load verse of the day. Please try again later.';
+            });
+    </script>
+</body>
+</html>
